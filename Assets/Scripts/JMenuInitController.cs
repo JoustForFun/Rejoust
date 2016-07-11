@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Lib;
+using JAudio;
 
 /*
  * This module is used to initialized some of the public variable/objects within Lib
