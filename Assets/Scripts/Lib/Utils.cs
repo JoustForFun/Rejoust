@@ -461,10 +461,13 @@ namespace Utils
 			}
 		}
 
+		/**
+		 * Adds a player score to the leaderboards
+		 **/
 		public void AddRanking(Ranking rank) {
 			data.Add (rank);
 			if(!rank.GetUserName().Contains(":"))
-				SystemUtils.WriteLinesToFile (new string[] {rank.ToString()});
+				SystemUtils.WriteLinesToFile(Reference.LEADERBOARDS_FILE_NAME, new string[] {rank.ToString()});
 		}
 
 		public void AddRanking (string username, long score) {
@@ -499,7 +502,8 @@ namespace Utils
 			if (separator != -1) {
 				try {
 					string username = text.Substring (0, separator);
-					long score = Int64.TryParse(text.Substring (separator + 1, text.Length - separator - 1));
+					long score = 0;
+					Int64.TryParse(text.Substring (separator + 1, text.Length - separator - 1), out score);
 					return new Ranking(username, score);
 				} catch (Exception e) {
 					Debug.Log ("Failed to parse username and score from string!");
