@@ -6,8 +6,8 @@ namespace JPowerUp
 {
 	public class PowerupFactory
 	{
-		private static PowerupFactory INSTANCE = new PowerupFactory();
-		private static Dictionary<EnumPowerup, IPowerup> powerups = new Dictionary<EnumPowerup, IPowerup>();
+		public static PowerupFactory INSTANCE = new PowerupFactory();
+		private Dictionary<EnumPowerup, IPowerup> powerups = new Dictionary<EnumPowerup, IPowerup>();
 
 		public PowerupFactory () {
 			

@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using JPowerUp;
 
 public class controller : MonoBehaviour { 
 	public Rigidbody rb; //rigidbody for upwards force
 	public float player_y; //stores y value for looping
 	public float player_x; 
 	public float player_speed; 
+
+	private EnumPowerup powerup = EnumPowerup.NONE;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
@@ -38,6 +42,21 @@ public class controller : MonoBehaviour {
 		if (transform.position.x < -10) { //looping screen 
 			transform.position = new Vector3 (10.0f, player_y, transform.position.z);
 
+		}
+
+
+	}
+
+	void OnCollisionEnter(Collision col) {
+		string tag = col.gameObject.tag;
+
+		switch (tag) {
+		case "powerup":
+			//Write code here
+			break;
+		case "enemy":
+			//Write code here
+			break;
 		}
 	}
 }

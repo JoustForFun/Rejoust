@@ -21,7 +21,7 @@ public class collision_outcome : MonoBehaviour {
 	
 	}
 
-	void OnTriggerEnter (Colli attack){
+	void OnTriggerEnter (Collider attack){
 		if (player_y > enemy_y) {
 			Destroy (enemy1);
 		}
