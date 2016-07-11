@@ -1,18 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-using JPowerUp;
 
-/**
- * The player controller that is attached to the player
- * */
 public class controller : MonoBehaviour { 
 	public Rigidbody rb; //rigidbody for upwards force
 	public float player_y; //stores y value for looping
 	public float player_x; 
-	public float player_speed;
-
-	private EnumPowerup powerup = EnumPowerup.NONE;
-
+	public float player_speed; 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
@@ -34,21 +27,17 @@ public class controller : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.UpArrow)) { // jumping
 			transform.Translate (Vector3.up * Time.deltaTime * 16);
-			rb.AddForce(transform.up * 124); //makes it floaty!
+			rb.AddForce(transform.up * 124); //makes it floaty! 
 		}
 
 		if (transform.position.x > 10) { //looping screen 
-			transform.position = new Vector3 (-10.0f, player_y, -1.0f);
+			transform.position = new Vector3 (-10.0f, player_y, transform.position.z);
 
 		}
 			
 		if (transform.position.x < -10) { //looping screen 
-			transform.position = new Vector3 (10.0f, player_y, -1.0f);
+			transform.position = new Vector3 (10.0f, player_y, transform.position.z);
 
 		}
-	}
-
-	void OnCollisionEnter(Collision col) {
-		
 	}
 }
