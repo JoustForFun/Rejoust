@@ -1,9 +1,76 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.IO;
+using Lib;
 
 namespace Utils
 {
+	/**
+	 * The SystemUtils class contains methods that handle file creation and IO
+	 * */
+	public static class SystemUtils {
+
+		private static string saveFolder = null;
+
+		public static string GetFileSeparator () {
+			if (SystemInfo.operatingSystem.ToLower().Contains("win"))
+				return Reference.FILE_SEPARATOR_NT;
+			return Reference.FILE_SEPARATOR_NIX;
+		}
+
+		private static string GetSaveFolderString () {
+			if (saveFolder == null)
+				saveFolder = String.Format ("{0}{1}{2}", Directory.GetCurrentDirectory(), GetFileSeparator(), Reference.SAVE_FOLDER_SUFFIX);
+			return saveFolder;
+
+		}
+
+		/**
+		 * Appends the text array as lines in a text file
+		 * The save folder is automatically applied
+		 * */
+		public static void WriteLinesToFile (string fileName, string[] text) {
+			FileInfo file = new FileInfo (String.Format("{0}{1}{2}", GetSaveFolderString(), GetFileSeparator(), fileName));
+			string[] toWrite = text;
+
+			try {
+				if (file.Exists) {
+					string[] old = File.ReadAllLines (file.FullName);
+					List<string> oldList = new List<string> (old);
+					List<string> addList = new List<string> (toWrite);
+					oldList.AddRange(addList);
+					toWrite = oldList.ToArray();
+				} else
+					file.Directory.Create ();
+				File.WriteAllLines(file.FullName, toWrite);
+
+			} catch (Exception e){ //Gotta catch'em all! 
+				Debug.LogError (e);
+			}
+		}
+
+		/**
+		 * Reads all the text from a file
+		 * Every line is a string in an array
+		 * */
+		public static string[] ReadLinesFromFile (string fileName) {
+			FileInfo file = new FileInfo (String.Format("{0}{1}{2}", GetSaveFolderString(), GetFileSeparator(), fileName));
+
+			string[] dataRead = null;
+
+			try {
+				if (file.Exists) {
+					dataRead = File.ReadAllLines(file.FullName);
+				}
+			} catch (Exception e) {
+				Debug.LogError (e);
+			}
+
+			return dataRead;
+		}
+	}
+
 	/**
 	 * The ByteUtil class contains ways of reading data from a byte array, which is helpful for saving data and handling packets
 	 * Add functions adds the variable/object to the end of an existing byte array, the read functions return the value and remove them from the array
@@ -372,5 +439,92 @@ namespace Utils
 		CLIENT,
 		SERVER
 	}
+
+	public class LeaderBoards {
+
+		public static readonly LeaderBoards INSTANCE = new LeaderBoards();
+
+		private List<Ranking> data = null;
+
+		public LeaderBoards () {
+			LoadData ();
+		}
+
+		private void LoadData() {
+			data = new List<Ranking> ();
+			string[] unprocessed = SystemUtils.ReadLinesFromFile (Reference.LEADERBOARDS_FILE_NAME);
+
+			foreach (string raw in unprocessed) {
+				Ranking rank = Ranking.CreateRankingFromText (raw);
+				if (rank != null)
+					data.Add (rank);
+			}
+		}
+
+		public void AddRanking(Ranking rank) {
+			data.Add (rank);
+			if(!rank.GetUserName().Contains(":"))
+				SystemUtils.WriteLinesToFile (new string[] {rank.ToString()});
+		}
+
+		public void AddRanking (string username, long score) {
+			Ranking rank = new Ranking (username, score);
+			AddRanking (rank);
+		}
+
+		public Ranking[] GetRanking() {
+			SortData ();
+			return data.ToArray ();
+		}
+
+		private void SortData() {
+			data.Sort ((r1, r2) => {return r1.GetScore().CompareTo(r2.GetScore());});
+		}
+	}
+
+	public class Ranking {
+
+		private readonly long score;
+		private readonly string username;
+
+		public Ranking (string username, long score) {
+			this.username = username;
+			this.score = score;
+		}
+
+		//TODO Validate if fix worked
+		public static Ranking CreateRankingFromText(string text) {
+			int separator = text.IndexOf(":");
+
+			if (separator != -1) {
+				try {
+					string username = text.Substring (0, separator);
+					long score = Int64.TryParse(text.Substring (separator + 1, text.Length - separator - 1));
+					return new Ranking(username, score);
+				} catch (Exception e) {
+					Debug.Log ("Failed to parse username and score from string!");
+					Debug.LogError (e);
+				}
+			}
+
+			return null;
+		}
+
+		public long GetScore() {
+			return this.score;
+		}
+
+		public string GetUserName() {
+			return this.username;
+		}
+
+		public override string ToString ()
+		{
+			return string.Format ("{0}:{1}", username, score);
+		}
+
+	}
+
+
 }
 
