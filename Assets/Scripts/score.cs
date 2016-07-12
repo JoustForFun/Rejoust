@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using JPlayer;
 
 public class score : MonoBehaviour {
-	public static int scr = 0; 
+	public static int myPlayer = 0;
+	//public static int scr = 0; 
 	Text mytext; 
 	public GameObject enemy;
 	// Use this for initialization
@@ -17,10 +19,11 @@ public class score : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		mytext.text = "Score: " + scr;
+		mytext.text = "Score: " + PlayerStatsController.INSTANCE.GetPlayerStats (myPlayer).score;
 	}
-	public void AddScore(int delta){
-		scr += delta; 
-		mytext.text = "Score: " + scr; 
-	}
+
+	//public void AddScore(int delta){
+	//	scr += delta; 
+	//	//mytext.text = "Score: " + scr; 
+	//}
 }
