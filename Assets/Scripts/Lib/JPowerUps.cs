@@ -103,6 +103,7 @@ namespace JPowerUp
 	}
 
 	public class PowerupLifeUp : SimplePowerup {
+		
 		public PowerupLifeUp () : base(EnumPowerup.LIFEUP, 0.0f) {
 		}
 

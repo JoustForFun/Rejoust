@@ -37,7 +37,16 @@ public class controller : MonoBehaviour {
 		player_y = transform.position.y;
 		player_x = transform.position.x;
 
+		IPowerup thePowerup = PowerupFactory.INSTANCE.CallPowerup (stats.powerups);
 
+		if (stats.powerupTimer <= 0 && stats.powerups != EnumPowerup.NONE) {
+			stats.powerupTimer = 0;
+			stats.powerups = EnumPowerup.NONE;
+			thePowerup.OnTimeout(gameObject);
+		} else {
+			thePowerup.OnUpdate(gameObject);
+			stats.powerupTimer -= Time.deltaTime;
+		}
 
 		if (Input.GetKey (KeyCode.LeftArrow)) { //move left
 			transform.Translate(Vector2.left * Time.deltaTime * stats.GetMovementSpeed());
@@ -80,9 +89,20 @@ public class controller : MonoBehaviour {
 				SpawnUtils.SpawnGameObject (soulgem, enemy);
 				Destroy (enemy);
 				stats.score += scoreValue;
-			}
-			if (player_y < enemy_y) {
-				Destroy (gameObject);
+			} else if (player_y < enemy_y && stats.invincible == false) {
+				stats.lives--;
+				stats.powerups = EnumPowerup.SHEILD;
+				IPowerup thePowerup = PowerupFactory.INSTANCE.CallPowerup (EnumPowerup.SHEILD);
+
+				stats.powerupTimer = thePowerup.GetTimeoutTime();
+				thePowerup.OnPickUp (gameObject);
+
+				gameObject.transform.position = new Vector2(0, 0);
+
+
+				if (stats.lives < 0)
+					Destroy (gameObject);
+				
 			} else {
 				//Destroy (gameObject);
 				//TODO: Add backwards/opposite force when bouncing off. 

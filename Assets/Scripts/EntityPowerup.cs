@@ -30,8 +30,6 @@ public class EntityPowerup : MonoBehaviour {
 			break;
 		}
 			
-			
-
 		gameObject.GetComponentInChildren<SpriteRenderer> ().sprite = theSprite;
 	}
 
@@ -48,9 +46,13 @@ public class EntityPowerup : MonoBehaviour {
 
 		if (col.gameObject.tag.ToLower() != "player")
 			return;
-		
+
 		int player = col.gameObject.GetComponent<controller> ().stat_id;
 		PlayerStats stats = PlayerStatsController.INSTANCE.GetPlayerStats (player);
+
+		if (stats.powerups != EnumPowerup.NONE)
+			PowerupFactory.INSTANCE.CallPowerup (stats.powerups).OnTimeout(col.gameObject);
+		
 		stats.powerups = this.type;
 		IPowerup thePowerup = PowerupFactory.INSTANCE.CallPowerup (this.type);
 		stats.powerupTimer = thePowerup.GetTimeoutTime();
@@ -60,7 +62,7 @@ public class EntityPowerup : MonoBehaviour {
 	}
 
 	private EnumPowerup GetRandomPowerup() {
-		switch (new System.Random ().Next (0, 2)) {
+		switch (new System.Random ().Next (0, 3)) {
 			case 0:
 				return EnumPowerup.SHEILD;
 			case 1:
