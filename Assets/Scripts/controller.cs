@@ -91,6 +91,10 @@ public class controller : MonoBehaviour {
 				stats.score += scoreValue;
 			} else if (player_y < enemy_y && stats.invincible == false) {
 				stats.lives--;
+
+				if (stats.powerups != EnumPowerup.NONE)
+					PowerupFactory.INSTANCE.CallPowerup (stats.powerups).OnTimeout (gameObject);
+					
 				stats.powerups = EnumPowerup.SHEILD;
 				IPowerup thePowerup = PowerupFactory.INSTANCE.CallPowerup (EnumPowerup.SHEILD);
 
