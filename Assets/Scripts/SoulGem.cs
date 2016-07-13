@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Utils;
+using JPlayer;
 
 public class SoulGem : MonoBehaviour {
 
@@ -28,6 +29,15 @@ public class SoulGem : MonoBehaviour {
 			Destroy (gameObject);
 		}
 	
+	
+	
+	}
+
+	void OnCollisionEnter2D(Collision2D col) {
+		if (col.gameObject.tag.ToLower() == "player") {
+			Destroy (gameObject);
+			PlayerStatsController.INSTANCE.GetPlayerStats (col.gameObject.GetComponent<controller> ().stat_id).score += 200;
+		}
 	}
 
 
