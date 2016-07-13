@@ -46,7 +46,8 @@ public class enemyAI_1 : MonoBehaviour {
 	}
 
 	void Flying() {
-		transform.position += new Vector3(0,(player_y-transform.position.y),0) * Time.deltaTime * sometimes_y;
+		//gameObject.GetComponent<Rigidbody2D> ().AddForce (new Vector2(0,  sometimes_y* player_y - transform.position.y));
+		transform.position += new Vector3(0,(player_y-transform.position.y)*0.8f,0) * Time.deltaTime * sometimes_y;
 		//flies upwards
 		//rb1.AddForce(sometimes*transform.up); //adds upwards force to make floaty 
 		}
