@@ -529,6 +529,22 @@ namespace Utils
 
 	}
 
+	public static class SpawnUtils {
+		public static GameObject SpawnGameObject(GameObject prefab, GameObject location) {
+			GameObject obj = UnityEngine.Object.Instantiate (prefab) as GameObject;
+			obj.transform.position = location.transform.position;
+			return obj;
+		}
+
+		public static GameObject SpawnGameObject(string resourceLoc, GameObject location) {
+			GameObject prefab = Resources.Load<GameObject> (resourceLoc);
+
+			GameObject obj = UnityEngine.Object.Instantiate (prefab) as GameObject;
+			obj.transform.position = location.transform.position;
+			return obj;
+		}
+	}
+
 
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JPowerUp;
 
 namespace JPlayer
 {
@@ -53,6 +54,8 @@ namespace JPlayer
 	public class PlayerStats {
 		public bool invincible;
 		public bool isDead;
+		public EnumPowerup powerups;
+		public float powerupTimer;
 		public EnumPlayerAnimation playerAnimation;
 		public long score;
 		public int lives;

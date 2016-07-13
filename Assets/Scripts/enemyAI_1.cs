@@ -17,30 +17,37 @@ public class enemyAI_1 : MonoBehaviour {
 	void Start () {
 		rb1 = GetComponent<Rigidbody2D> ();
 		enemy_y = transform.position.y;
-		player_y = GameObject.Find ("player").transform.position.y;
 		begin_diff = player_y - enemy_y;
 	    
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		player_y = GameObject.Find ("player").GetComponent<controller> ().player_y;
-		player_x = GameObject.Find ("player").transform.position.x;
+		GameObject thePlayer = GameObject.FindWithTag ("Player");
+
+		if (thePlayer == null)
+			return;
+
+		player_y = thePlayer.transform.position.y;
+
+		player_x = thePlayer.transform.position.x;
 
 		//transform.position = new Vector3(player_x, player_y, -1.0f) * Time.deltaTime * 6.0f;
 		transform.position += new Vector3((player_x-transform.position.x),0,0) * Time.deltaTime * sometimes_x;
 
 		if (player_y - enemy_y>=begin_diff-0.1f) { //fly upwards if player height is greater than enemy height
 			Flying (); 
+
 		}
 		else if (player_y - enemy_y<begin_diff-0.1f) { //attack if player height is less than enemy height
-			Attacking (); 
+			Attacking ();
 		} 
 
 	}
 
 	void Flying() {
 		transform.position += new Vector3(0,(player_y-transform.position.y),0) * Time.deltaTime * sometimes_y;
+		Debug.Log ("1");
 		//flies upwards
 		//rb1.AddForce(sometimes*transform.up); //adds upwards force to make floaty 
 		}

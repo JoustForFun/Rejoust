@@ -20,6 +20,14 @@ namespace Lib {
 		public static readonly int MULTIPLAYER = 2;
 	}
 
+	public static class Sprites {
+		public static readonly Sprite DASH = Resources.Load<Sprite> ("Objects/Powerups/Dash/Dash0");
+		public static readonly Sprite EXTRA_LIFE = Resources.Load<Sprite>("Objects/Powerups/ExtraLife/ExtraLife0");
+		public static readonly Sprite JUMP = Resources.Load<Sprite> ("Objects/Powerups/Jump/Jump0");
+		public static readonly Sprite SHEILD = Resources.Load<Sprite> ("Objects/Powerups/Shield/Shield0");
+		public static readonly Sprite SOUL_GEM = Resources.Load<Sprite> ("Objects/Powerups/SoulGem/DarkCrystal/DarkCrystal0");
+	}
+
 	public static class UIComponents {
 		public static Canvas MAIN_MENU = null;
 		public static Canvas SERVER_SELECTION = null;

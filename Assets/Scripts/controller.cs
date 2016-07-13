@@ -3,11 +3,13 @@ using System.Collections;
 using JPowerUp;
 using UnityEngine.UI;
 using JPlayer;
+using Utils;
 
 public class controller : MonoBehaviour { 
 	public Rigidbody2D rb; //rigidbody for upwards force
 	public float player_y; //stores y value for looping
 	public float player_x; 
+	private GameObject soulgem;
 
 	public int stat_id;
 	public float enemy_y;
@@ -20,6 +22,7 @@ public class controller : MonoBehaviour {
 
 	void Awake () {
 		stat_id = PlayerStatsController.INSTANCE.AddPlayer (new PlayerStats (6.0f, 16f, 3));
+		soulgem = Resources.Load("Prefab/SoulGem") as GameObject;
 		score.myPlayer = stat_id;
 	}
 
@@ -73,7 +76,8 @@ public class controller : MonoBehaviour {
 		case "enemy":
 			GameObject enemy = col.gameObject;
 			enemy_y = enemy.transform.position.y;
-			if (player_y > enemy_y) {
+			if (player_y > enemy_y || stats.invincible == true) {
+				SpawnUtils.SpawnGameObject (soulgem, enemy);
 				Destroy (enemy);
 				stats.score += scoreValue;
 			}
