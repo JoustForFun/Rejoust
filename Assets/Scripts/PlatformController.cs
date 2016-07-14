@@ -17,7 +17,7 @@ public class PlatformController : MonoBehaviour {
 			gameObject.transform.position -= new Vector3 (0, 0.5f);
 
 			if (gameObject.transform.position.y <= -3.5f) {
-				gameObject.transform.position = new Vector3 (-5.4f, -3.5f);
+				gameObject.transform.position = new Vector3 (-1.6f, -3.5f);
 				loadInProcess = false;
 				GameObject.FindGameObjectWithTag ("Spawner").GetComponent<JSpawner> ().RefreshSpawns ();
 			}
