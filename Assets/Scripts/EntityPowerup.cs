@@ -18,16 +18,20 @@ public class EntityPowerup : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Sprite theSprite = null;
+		Animator animator = gameObject.GetComponentInChildren<Animator>();
 
 		switch (type) {
 		case EnumPowerup.DASH:
 			theSprite = Sprites.DASH;
+			animator.SetInteger ("PowerupID", 1);
 			break;
 		case EnumPowerup.LIFEUP:
 			theSprite = Sprites.EXTRA_LIFE;
+			animator.SetInteger ("PowerupID", 0);
 			break;
 		case EnumPowerup.SHEILD:
 			theSprite = Sprites.SHEILD;
+			animator.SetInteger ("PowerupID", 2);
 			break;
 		}
 			
@@ -45,7 +49,7 @@ public class EntityPowerup : MonoBehaviour {
 	
 	}
 
-	void OnCollisionEnter2D(Collision2D col) {
+	void OnTriggerEnter2D(Collider2D col) {
 
 		if (col.gameObject.tag.ToLower() != "player")
 			return;

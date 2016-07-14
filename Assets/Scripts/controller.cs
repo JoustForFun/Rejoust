@@ -12,9 +12,9 @@ public class controller : MonoBehaviour {
 	public float player_y; //stores y value for looping
 	public float player_x; 
 	public Vector2 jump_force;
-	public float horizontal_speed = 0.2f;
 	public float speed_limitX = 1.0f;
 	private float someScale;
+	private bool OnGround;
 
 	public int stat_id;
 	public float enemy_y;
@@ -26,8 +26,9 @@ public class controller : MonoBehaviour {
 	//private EnumPowerup powerup = EnumPowerup.NONE;
 
 	void Awake () {
-		stat_id = PlayerStatsController.INSTANCE.AddPlayer (new PlayerStats (3.0f, 11.25f, 3));
+		stat_id = PlayerStatsController.INSTANCE.AddPlayer (new PlayerStats (0.3f, 11.25f, 3));
 		score.myPlayer = stat_id;
+		OnGround = true;
 	}
 
 	// Use this for initialization
@@ -38,6 +39,8 @@ public class controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Animator ani = gameObject.GetComponent<Animator> ();
+//		ani.SetInteger ("State", 0);
 		stats = PlayerStatsController.INSTANCE.GetPlayerStats (stat_id);
 		player_y = transform.position.y;
 		player_x = transform.position.x;
@@ -54,26 +57,35 @@ public class controller : MonoBehaviour {
 		}
 
 		if (Input.GetKey (KeyCode.LeftArrow)) { //move left
-			if (Mathf.Abs(rb.velocity.x)<speed_limitX){
+			if (OnGround)
+				ani.SetInteger ("State", 1);
+			else
+				ani.SetInteger ("State", 2);
+			if (Mathf.Abs (rb.velocity.x) < speed_limitX) {
 				//flip sprite
-				transform.localScale = new Vector2(-someScale, transform.localScale.y);
-				rb.AddForce(new Vector2(-horizontal_speed,0),ForceMode2D.Impulse);
+				transform.localScale = new Vector2 (-someScale, transform.localScale.y);
+				rb.AddForce (new Vector2 (-stats.GetMovementSpeed(), 0), ForceMode2D.Impulse);
 			}
 			//transform.Translate(Vector2.left * Time.deltaTime * stats.GetMovementSpeed());
-		}
-
-		if (Input.GetKey (KeyCode.RightArrow)) { //move right
-			if(Mathf.Abs(rb.velocity.x)<speed_limitX){
-				transform.localScale = new Vector2(someScale, transform.localScale.y);
-				rb.AddForce(new Vector2(horizontal_speed,0),ForceMode2D.Impulse);
+		} else if (Input.GetKey (KeyCode.RightArrow)) { //move right
+			if (OnGround)
+				ani.SetInteger ("State", 1);
+			else
+				ani.SetInteger ("State", 2);
+			if (Mathf.Abs (rb.velocity.x) < speed_limitX) {
+				transform.localScale = new Vector2 (someScale, transform.localScale.y);
+				rb.AddForce (new Vector2 (stats.GetMovementSpeed(), 0), ForceMode2D.Impulse);
 			}
-		//transform.Translate(Vector2.right * Time.deltaTime * stats.GetMovementSpeed());
+			//transform.Translate(Vector2.right * Time.deltaTime * stats.GetMovementSpeed());
+		} else {
+			ani.SetInteger ("State", 0);
 		}
 
 		if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.LeftControl)) { // jumping
 			transform.Translate (Vector2.up * Time.deltaTime * stats.GetJumpHeight());
 			rb.AddForce(transform.up * 124); //makes it floaty! 
 			AudioManager.INSTANCE.PlayAudio (Audio.FLAP);
+			OnGround = false;
 		}
 
 		if (transform.position.x > 10) { //looping screen 
@@ -85,8 +97,6 @@ public class controller : MonoBehaviour {
 			transform.position = new Vector2 (10.0f, player_y);
 
 		}
-
-
 	}
 
 	void OnCollisionEnter2D (Collision2D col) {
@@ -118,8 +128,9 @@ public class controller : MonoBehaviour {
 				thePowerup.OnPickUp (gameObject);
 
 				gameObject.transform.position = new Vector2(0, 0);
+				gameObject.GetComponent<Animator> ().SetInteger ("State", 3);
 
-				if (stats.lives < 0)
+				if (stats.lives < 0) 
 					Destroy (gameObject);
 				
 			} else {
@@ -129,6 +140,7 @@ public class controller : MonoBehaviour {
 			break;
 		case "platform":
 			AudioManager.INSTANCE.PlayAudio (Audio.HIT);
+			OnGround = true;
 			break;
 		}
 	}
