@@ -20,6 +20,21 @@ namespace Lib {
 		public static readonly int MULTIPLAYER = 2;
 	}
 
+	public static class Audio {
+		public static readonly AudioClip CROWD_CHEER = Resources.Load<AudioClip> ("Audio/CrowdCheer");
+		public static readonly AudioClip DEATH = Resources.Load<AudioClip> ("Audio/Death");
+		public static readonly AudioClip FLAP = Resources.Load<AudioClip> ("Audio/Flap");
+		public static readonly AudioClip GATE_OPEN = Resources.Load<AudioClip> ("Audio/GateOpen");
+		public static readonly AudioClip GEM_PICKUP = Resources.Load<AudioClip> ("Audio/GemPickup");
+		public static readonly AudioClip HIT = Resources.Load<AudioClip> ("Audio/Hit");
+		public static readonly AudioClip MENU_SONG = Resources.Load<AudioClip>("Audio/MenuSong");
+		public static readonly AudioClip POWERUP = Resources.Load<AudioClip> ("Audio/Powerup");
+		public static readonly AudioClip POWERUP_APPEAR = Resources.Load<AudioClip> ("Audio/PowerupAppear");
+		public static readonly AudioClip ROAR = Resources.Load<AudioClip> ("Audio/Roar");
+		public static readonly AudioClip WALK = Resources.Load<AudioClip> ("Audio/Walk");
+
+	}
+
 	public static class Sprites {
 		public static readonly Sprite DASH = Resources.Load<Sprite> ("Objects/Powerups/Dash/Dash0");
 		public static readonly Sprite EXTRA_LIFE = Resources.Load<Sprite>("Objects/Powerups/ExtraLife/ExtraLife0");
