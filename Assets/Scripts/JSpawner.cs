@@ -4,6 +4,7 @@ using Utils;
 using System.Collections.Generic;
 using Lib;
 using UnityEngine.UI;
+using JAudio;
 
 public class JSpawner : MonoBehaviour {
 
@@ -27,6 +28,7 @@ public class JSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		AudioManager.INSTANCE.SetCamera (GameObject.FindGameObjectWithTag("MainCamera"));
 		WaveScreen = GameObject.FindGameObjectWithTag ("WaveScreen");
 		WaveScreen.GetComponent<Canvas> ().enabled = false;
 		RefreshSpawns ();
@@ -37,6 +39,7 @@ public class JSpawner : MonoBehaviour {
 		if (GameObject.FindGameObjectWithTag ("Enemy") == null && GameObject.FindGameObjectWithTag ("SoulGem") == null) {
 			if (breakTimer == 2.5f) {
 				WaveScreen.GetComponent<Canvas> ().enabled = true;
+				AudioManager.INSTANCE.PlayAudio (Audio.CROWD_CHEER);
 				if (wave % 5 == 0) {
 					WaveScreen.GetComponentInChildren<Text> ().text = string.Format ("Boss Wave : {0}", wave);
 				} else if (wave % 3 == 0) {

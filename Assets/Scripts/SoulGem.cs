@@ -3,6 +3,7 @@ using System.Collections;
 using Utils;
 using JPlayer;
 using Lib;
+using JAudio;
 
 public class SoulGem : MonoBehaviour {
 
@@ -38,6 +39,7 @@ public class SoulGem : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.tag.ToLower() == "player") {
+			AudioManager.INSTANCE.PlayAudio (Audio.GEM_PICKUP);
 			Destroy (gameObject);
 			PlayerStatsController.INSTANCE.GetPlayerStats (col.gameObject.GetComponent<controller> ().stat_id).score += 200;
 		}

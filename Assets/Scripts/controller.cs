@@ -7,9 +7,13 @@ using Utils;
 using Lib;
 
 public class controller : MonoBehaviour { 
-	public Rigidbody2D rb; //rigidbody for upwards force
+	Rigidbody2D rb; //rigidbody for upwards force
 	public float player_y; //stores y value for looping
 	public float player_x; 
+	public Vector2 jump_force;
+	public float horizontal_speed = 0.2f;
+	public float speed_limitX = 1.0f;
+	private float someScale;
 
 	public int stat_id;
 	public float enemy_y;
@@ -28,6 +32,7 @@ public class controller : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
+		someScale = transform.localScale.x;
 	}
 	
 	// Update is called once per frame
@@ -48,11 +53,18 @@ public class controller : MonoBehaviour {
 		}
 
 		if (Input.GetKey (KeyCode.LeftArrow)) { //move left
-			transform.Translate(Vector2.left * Time.deltaTime * stats.GetMovementSpeed());
+			if (Mathf.Abs(rb.velocity.x)<speed_limitX){
+				//flip sprite
+				transform.localScale = new Vector2(-someScale, transform.localScale.y);
+				rb.AddForce(new Vector2(-horizontal_speed,0),ForceMode2D.Impulse);}
+			//transform.Translate(Vector2.left * Time.deltaTime * stats.GetMovementSpeed());
 		}
 
 		if (Input.GetKey (KeyCode.RightArrow)) { //move right
-			transform.Translate(Vector2.right * Time.deltaTime * stats.GetMovementSpeed());
+			if(Mathf.Abs(rb.velocity.x)<speed_limitX){
+				transform.localScale = new Vector2(someScale, transform.localScale.y);
+				rb.AddForce(new Vector2(horizontal_speed,0),ForceMode2D.Impulse);}
+		//transform.Translate(Vector2.right * Time.deltaTime * stats.GetMovementSpeed());
 		}
 
 		if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.LeftControl)) { // jumping
