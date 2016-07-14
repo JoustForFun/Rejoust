@@ -35,7 +35,7 @@ public class EntityPowerup : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		disappearTime -= 1.0f * Time.deltaTime;
+		disappearTime -= 0.5f * Time.deltaTime;
 
 		if (disappearTime <= 0)
 			Destroy (gameObject);

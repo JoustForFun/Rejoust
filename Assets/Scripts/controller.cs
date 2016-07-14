@@ -21,7 +21,7 @@ public class controller : MonoBehaviour {
 	//private EnumPowerup powerup = EnumPowerup.NONE;
 
 	void Awake () {
-		stat_id = PlayerStatsController.INSTANCE.AddPlayer (new PlayerStats (6.0f, 16f, 3));
+		stat_id = PlayerStatsController.INSTANCE.AddPlayer (new PlayerStats (3.0f, 11.25f, 3));
 		soulgem = Resources.Load("Prefab/SoulGem") as GameObject;
 		score.myPlayer = stat_id;
 	}
@@ -56,7 +56,7 @@ public class controller : MonoBehaviour {
 			transform.Translate(Vector2.right * Time.deltaTime * stats.GetMovementSpeed());
 		}
 
-		if (Input.GetKeyDown (KeyCode.UpArrow)) { // jumping
+		if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.LeftControl)) { // jumping
 			transform.Translate (Vector2.up * Time.deltaTime * stats.GetJumpHeight());
 			rb.AddForce(transform.up * 124); //makes it floaty! 
 		}

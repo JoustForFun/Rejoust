@@ -28,6 +28,24 @@ namespace Lib {
 		public static readonly Sprite SOUL_GEM = Resources.Load<Sprite> ("Objects/Powerups/SoulGem/DarkCrystal/DarkCrystal0");
 	}
 
+	public static class Entities {
+		public static readonly GameObject ENEMY_MINI_DRAGON = Resources.Load ("Prefab/EnemyMiniDragon") as GameObject;
+		public static readonly GameObject ENEMY_RAVEN_KNIGHT = Resources.Load ("Prefab/EnemyRavenKnight") as GameObject;
+		public static readonly GameObject ENTITY_POWERUP = Resources.Load ("Prefab/EntityPowerup") as GameObject;
+	}
+
+	public static class SpawnTables {
+
+		public static readonly GameObject[] COLOSSEUM_0 = {
+			Entities.ENEMY_MINI_DRAGON
+		};
+
+		public static readonly GameObject[] COLOSSEUM_1 = {
+			Entities.ENEMY_MINI_DRAGON,
+			Entities.ENEMY_RAVEN_KNIGHT
+		};
+	}
+
 	public static class UIComponents {
 		public static Canvas MAIN_MENU = null;
 		public static Canvas SERVER_SELECTION = null;
