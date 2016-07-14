@@ -4,12 +4,12 @@ using JPowerUp;
 using UnityEngine.UI;
 using JPlayer;
 using Utils;
+using Lib;
 
 public class controller : MonoBehaviour { 
 	public Rigidbody2D rb; //rigidbody for upwards force
 	public float player_y; //stores y value for looping
 	public float player_x; 
-	private GameObject soulgem;
 
 	public int stat_id;
 	public float enemy_y;
@@ -22,7 +22,6 @@ public class controller : MonoBehaviour {
 
 	void Awake () {
 		stat_id = PlayerStatsController.INSTANCE.AddPlayer (new PlayerStats (3.0f, 11.25f, 3));
-		soulgem = Resources.Load("Prefab/SoulGem") as GameObject;
 		score.myPlayer = stat_id;
 	}
 
@@ -85,11 +84,11 @@ public class controller : MonoBehaviour {
 		case "enemy":
 			GameObject enemy = col.gameObject;
 			enemy_y = enemy.transform.position.y;
-			if (player_y > enemy_y || stats.invincible == true) {
-				SpawnUtils.SpawnGameObject (soulgem, enemy);
+			if (player_y - 0.2f > enemy_y|| stats.invincible == true) {
+				SpawnUtils.SpawnGameObject (Entities.ENTITY_SOULGEM, enemy);
 				Destroy (enemy);
 				stats.score += scoreValue;
-			} else if (player_y < enemy_y && stats.invincible == false) {
+			} else if (player_y - 0.2f < enemy_y && stats.invincible == false) {
 				stats.lives--;
 
 				if (stats.powerups != EnumPowerup.NONE)

@@ -2,17 +2,13 @@
 using System.Collections;
 using Utils;
 using JPlayer;
+using Lib;
 
 public class SoulGem : MonoBehaviour {
 
 	private float timer = 5.0f;
-	private GameObject[] enemies;
 
 	void Awake() {
-		enemies = new GameObject[] {
-			Resources.Load ("Prefab/enemy2") as GameObject,
-			Resources.Load ("Prefab/enemy1") as GameObject
-		};
 	}
 
 	// Use this for initialization
@@ -23,11 +19,18 @@ public class SoulGem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		timer -= 1.0f * Time.deltaTime;
+		GameObject[] enemies = (JSpawner.type != EnumLevelType.GEM_LEVEL) ? SpawnUtils.GetLevelSpawnTable(JSpawner.type) : SpawnUtils.GetLevelSpawnTable(EnumLevelType.DIFFICULTY_3);
 
 		if (timer <= 0) {
-			SpawnUtils.SpawnGameObject (enemies [Random.Range (0, 2)], gameObject);
+			SpawnUtils.SpawnGameObject (enemies [Random.Range (0, enemies.Length)], gameObject);
 			Destroy (gameObject);
 		}
+
+		if (transform.position.x > 10)  //looping screen 
+			transform.position = new Vector2 (-10.0f, transform.position.y);
+
+		if (transform.position.x < -10)  //looping screen 
+			transform.position = new Vector2 (10.0f, transform.position.y);
 	
 	
 	

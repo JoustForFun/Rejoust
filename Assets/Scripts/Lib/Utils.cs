@@ -543,6 +543,38 @@ namespace Utils
 			obj.transform.position = location.transform.position;
 			return obj;
 		}
+
+		public static GameObject SpawnGameObject(GameObject prefab, Vector3 v3) {
+			GameObject obj = UnityEngine.Object.Instantiate (prefab) as GameObject;
+			obj.transform.position = v3;
+			return obj;
+		}
+
+		public static GameObject[] GetLevelSpawnTable(EnumLevelType type) {
+			switch (type) {
+			case EnumLevelType.DIFFICULTY_1:
+				return SpawnTables.COLOSSEUM_0;
+			case EnumLevelType.DIFFICULTY_2:
+				return SpawnTables.COLOSSEUM_1;
+			case EnumLevelType.DIFFICULTY_3:
+				return SpawnTables.COLOSSEUM_2;
+			case EnumLevelType.GEM_LEVEL:
+				return SpawnTables.COLOSSEUM_GEM;
+			case EnumLevelType.BOSS_LEVEL:
+				return SpawnTables.COLOSSEUM_BOSS;
+			default:
+				return SpawnTables.COLOSSEUM_0;
+				
+			}
+		}
+	}
+
+	public enum EnumLevelType {
+		DIFFICULTY_1,
+		DIFFICULTY_2,
+		DIFFICULTY_3,
+		GEM_LEVEL,
+		BOSS_LEVEL
 	}
 
 

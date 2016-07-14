@@ -10,6 +10,7 @@ public class enemyAI_1 : MonoBehaviour {
 	public float sometimes_x;
 	public float sometimes_y;
 	public float begin_diff;
+	//private float waitTime = Random.Range(0f, 3f);
 
 
 
@@ -17,12 +18,17 @@ public class enemyAI_1 : MonoBehaviour {
 	void Start () {
 		rb1 = GetComponent<Rigidbody2D> ();
 		enemy_y = transform.position.y;
-		begin_diff = player_y - enemy_y;
-	    
+		begin_diff = player_y - enemy_y;  
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		//if (waitTime > 0) {
+		//	waitTime -= Time.deltaTime;
+		//	return;
+		//} 
+
 		GameObject thePlayer = GameObject.FindWithTag ("Player");
 
 		if (thePlayer == null)
@@ -33,7 +39,7 @@ public class enemyAI_1 : MonoBehaviour {
 		player_x = thePlayer.transform.position.x;
 
 		//transform.position = new Vector3(player_x, player_y, -1.0f) * Time.deltaTime * 6.0f;
-		transform.position += new Vector3((player_x-transform.position.x),0,0) * Time.deltaTime * sometimes_x;
+		transform.position += new Vector3(((player_x-transform.position.x) > (transform.position.x-player_x))?(player_x-transform.position.x):(transform.position.x-player_x),0,0) * Time.deltaTime * sometimes_x;
 
 		if (player_y - enemy_y>=begin_diff-0.1f) { //fly upwards if player height is greater than enemy height
 			Flying (); 
@@ -42,6 +48,12 @@ public class enemyAI_1 : MonoBehaviour {
 		else if (player_y - enemy_y<begin_diff-0.1f) { //attack if player height is less than enemy height
 			Attacking ();
 		} 
+
+		if (transform.position.x > 10)  //looping screen 
+			transform.position = new Vector2 (-10.0f, player_y);
+
+		if (transform.position.x < -10)  //looping screen 
+			transform.position = new Vector2 (10.0f, player_y);
 
 	}
 

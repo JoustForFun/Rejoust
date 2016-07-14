@@ -32,17 +32,33 @@ namespace Lib {
 		public static readonly GameObject ENEMY_MINI_DRAGON = Resources.Load ("Prefab/EnemyMiniDragon") as GameObject;
 		public static readonly GameObject ENEMY_RAVEN_KNIGHT = Resources.Load ("Prefab/EnemyRavenKnight") as GameObject;
 		public static readonly GameObject ENTITY_POWERUP = Resources.Load ("Prefab/EntityPowerup") as GameObject;
+		public static readonly GameObject ENTITY_SOULGEM = Resources.Load ("Prefab/EntitySoulGem") as GameObject;
+		public static readonly GameObject ENTITY_SPAWNER = Resources.Load ("Prefab/EntityGemSpawner") as GameObject;
 	}
 
 	public static class SpawnTables {
 
-		public static readonly GameObject[] COLOSSEUM_0 = {
+		public static readonly GameObject[] COLOSSEUM_0 = new GameObject[] {
 			Entities.ENEMY_MINI_DRAGON
 		};
 
-		public static readonly GameObject[] COLOSSEUM_1 = {
+		public static readonly GameObject[] COLOSSEUM_1 = new GameObject[] {
 			Entities.ENEMY_MINI_DRAGON,
 			Entities.ENEMY_RAVEN_KNIGHT
+		};
+
+		public static readonly GameObject[] COLOSSEUM_2 = new GameObject[] {
+			Entities.ENEMY_MINI_DRAGON,
+			Entities.ENEMY_RAVEN_KNIGHT
+		};
+			
+		public static readonly GameObject[] COLOSSEUM_BOSS = new GameObject[] {
+			Entities.ENEMY_MINI_DRAGON,
+			Entities.ENEMY_RAVEN_KNIGHT
+		};
+
+
+		public static readonly GameObject[] COLOSSEUM_GEM = new GameObject[] {
 		};
 	}
 
