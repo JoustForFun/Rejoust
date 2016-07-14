@@ -26,7 +26,7 @@ public class controller : MonoBehaviour {
 	//private EnumPowerup powerup = EnumPowerup.NONE;
 
 	void Awake () {
-		stat_id = PlayerStatsController.INSTANCE.AddPlayer (new PlayerStats (0.3f, 11.25f, 3));
+		stat_id = PlayerStatsController.INSTANCE.AddPlayer (new PlayerStats (0.6f, 11.25f, 3));
 		score.myPlayer = stat_id;
 		OnGround = true;
 	}
@@ -84,7 +84,7 @@ public class controller : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.LeftControl)) { // jumping
 			transform.Translate (Vector2.up * Time.deltaTime * stats.GetJumpHeight());
 			rb.AddForce(transform.up * 124); //makes it floaty! 
-			AudioManager.INSTANCE.PlayAudio (Audio.FLAP);
+			AudioManager.INSTANCE.PlayAudio (Audio.Enemy_FLAP);
 			OnGround = false;
 		}
 

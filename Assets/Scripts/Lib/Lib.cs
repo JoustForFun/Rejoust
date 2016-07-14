@@ -7,6 +7,7 @@ namespace Lib {
 		public static readonly string GAME_NAME = "Rejoust";
 		public static readonly int BUILD_NUMBER = 0;
 		public static readonly string AUTHORS = "The Rejoust Team";
+		public static long FINAL_SCORE = 0;
 
 		public static readonly string FILE_SEPARATOR_NIX = "/";
 		public static readonly string FILE_SEPARATOR_NT = "\\";

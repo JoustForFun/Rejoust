@@ -92,11 +92,11 @@ namespace JPowerUp
 		}
 
 		public override void OnPickUp(GameObject player) {
-			PlayerStatsController.INSTANCE.GetPlayerStats(player.GetComponent<controller> ().stat_id).delta_movementSpeed += 0.2f;
+			PlayerStatsController.INSTANCE.GetPlayerStats(player.GetComponent<controller> ().stat_id).delta_movementSpeed += 0.5f;
 		}
 
 		public override void OnTimeout (GameObject player) {
-			PlayerStatsController.INSTANCE.GetPlayerStats(player.GetComponent<controller> ().stat_id).delta_movementSpeed -= 0.2f;
+			PlayerStatsController.INSTANCE.GetPlayerStats(player.GetComponent<controller> ().stat_id).delta_movementSpeed -= 0.5f;
 		}
 
 
