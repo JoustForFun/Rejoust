@@ -103,6 +103,9 @@ public class controller : MonoBehaviour {
 		stats = PlayerStatsController.INSTANCE.GetPlayerStats (stat_id);
 		string tag = col.gameObject.tag.ToLower();
 
+		if (col.gameObject.name.ToLower ().Contains ("lion"))
+			return;
+
 		switch (tag) {
 		case "powerup":
 			//Write code here. 
