@@ -2,6 +2,8 @@
 using System.Collections;
 using JPlayer;
 using JPowerUp;
+using JAudio;
+using Lib;
 
 public class EntityLava : MonoBehaviour {
 
@@ -16,11 +18,13 @@ public class EntityLava : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
-		if (col.gameObject.tag == "Enemy" || col.gameObject.tag == "SoulGem")
+		if (col.gameObject.tag == "Enemy" || col.gameObject.tag == "SoulGem") 
 			Destroy (col.gameObject);
 		else if (col.gameObject.tag == "Player") {
 			PlayerStats stats = PlayerStatsController.INSTANCE.GetPlayerStats (col.gameObject.GetComponent<controller> ().stat_id);
 			stats.lives--;
+
+			AudioManager.INSTANCE.PlayAudio (Audio.DEATH);
 
 			if (stats.powerups != EnumPowerup.NONE)
 				PowerupFactory.INSTANCE.CallPowerup (stats.powerups).OnTimeout (col.gameObject);
@@ -32,7 +36,6 @@ public class EntityLava : MonoBehaviour {
 			thePowerup.OnPickUp (col.gameObject);
 
 			col.gameObject.transform.position = new Vector2(0, 0);
-
 
 			if (stats.lives < 0)
 				Destroy (col.gameObject);

@@ -32,6 +32,8 @@ namespace Lib {
 		public static readonly AudioClip POWERUP_APPEAR = Resources.Load<AudioClip> ("Audio/PowerupAppear");
 		public static readonly AudioClip ROAR = Resources.Load<AudioClip> ("Audio/Roar");
 		public static readonly AudioClip WALK = Resources.Load<AudioClip> ("Audio/Walk");
+		public static readonly AudioClip POWERUP_DISAPPEAR = Resources.Load<AudioClip> ("Audio/PowerupDisappear");
+		public static readonly AudioClip Enemy_FLAP = Resources.Load<AudioClip> ("Audio/EnemyFlap");
 
 	}
 

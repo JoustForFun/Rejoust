@@ -55,8 +55,10 @@ public class JSpawner : MonoBehaviour {
 			}
 		}
 
-		if (GameObject.FindGameObjectWithTag("Powerup") == null && Random.Range (0, 300) == 250)
-			SpawnUtils.SpawnGameObject (Entities.ENTITY_POWERUP, spawnLoc [Random.Range(0, spawnLoc.Length)]);
+		if (GameObject.FindGameObjectWithTag ("Powerup") == null && Random.Range (0, 300) == 250) {
+			SpawnUtils.SpawnGameObject (Entities.ENTITY_POWERUP, spawnLoc [Random.Range (0, spawnLoc.Length)]);
+			AudioManager.INSTANCE.PlayAudio (Audio.POWERUP_APPEAR);
+		}
 	}
 
 	public void RefreshSpawns () {

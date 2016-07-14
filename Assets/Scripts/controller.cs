@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using JPlayer;
 using Utils;
 using Lib;
+using JAudio;
 
 public class controller : MonoBehaviour { 
 	Rigidbody2D rb; //rigidbody for upwards force
@@ -56,20 +57,23 @@ public class controller : MonoBehaviour {
 			if (Mathf.Abs(rb.velocity.x)<speed_limitX){
 				//flip sprite
 				transform.localScale = new Vector2(-someScale, transform.localScale.y);
-				rb.AddForce(new Vector2(-horizontal_speed,0),ForceMode2D.Impulse);}
+				rb.AddForce(new Vector2(-horizontal_speed,0),ForceMode2D.Impulse);
+			}
 			//transform.Translate(Vector2.left * Time.deltaTime * stats.GetMovementSpeed());
 		}
 
 		if (Input.GetKey (KeyCode.RightArrow)) { //move right
 			if(Mathf.Abs(rb.velocity.x)<speed_limitX){
 				transform.localScale = new Vector2(someScale, transform.localScale.y);
-				rb.AddForce(new Vector2(horizontal_speed,0),ForceMode2D.Impulse);}
+				rb.AddForce(new Vector2(horizontal_speed,0),ForceMode2D.Impulse);
+			}
 		//transform.Translate(Vector2.right * Time.deltaTime * stats.GetMovementSpeed());
 		}
 
 		if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.LeftControl)) { // jumping
 			transform.Translate (Vector2.up * Time.deltaTime * stats.GetJumpHeight());
 			rb.AddForce(transform.up * 124); //makes it floaty! 
+			AudioManager.INSTANCE.PlayAudio (Audio.FLAP);
 		}
 
 		if (transform.position.x > 10) { //looping screen 
@@ -102,6 +106,7 @@ public class controller : MonoBehaviour {
 				stats.score += scoreValue;
 			} else if (player_y - 0.2f < enemy_y && stats.invincible == false) {
 				stats.lives--;
+				AudioManager.INSTANCE.PlayAudio (Audio.DEATH);
 
 				if (stats.powerups != EnumPowerup.NONE)
 					PowerupFactory.INSTANCE.CallPowerup (stats.powerups).OnTimeout (gameObject);
@@ -114,7 +119,6 @@ public class controller : MonoBehaviour {
 
 				gameObject.transform.position = new Vector2(0, 0);
 
-
 				if (stats.lives < 0)
 					Destroy (gameObject);
 				
@@ -122,6 +126,9 @@ public class controller : MonoBehaviour {
 				//Destroy (gameObject);
 				//TODO: Add backwards/opposite force when bouncing off. 
 			}
+			break;
+		case "platform":
+			AudioManager.INSTANCE.PlayAudio (Audio.HIT);
 			break;
 		}
 	}

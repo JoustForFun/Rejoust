@@ -3,6 +3,7 @@ using System.Collections;
 using JPowerUp;
 using JPlayer;
 using Lib;
+using JAudio;
 
 public class EntityPowerup : MonoBehaviour {
 
@@ -37,8 +38,10 @@ public class EntityPowerup : MonoBehaviour {
 	void Update () {
 		disappearTime -= 0.5f * Time.deltaTime;
 
-		if (disappearTime <= 0)
+		if (disappearTime <= 0) {
+			AudioManager.INSTANCE.PlayAudio (Audio.POWERUP_DISAPPEAR);
 			Destroy (gameObject);
+		}
 	
 	}
 
@@ -46,6 +49,7 @@ public class EntityPowerup : MonoBehaviour {
 
 		if (col.gameObject.tag.ToLower() != "player")
 			return;
+		AudioManager.INSTANCE.PlayAudio(Audio.POWERUP);
 
 		int player = col.gameObject.GetComponent<controller> ().stat_id;
 		PlayerStats stats = PlayerStatsController.INSTANCE.GetPlayerStats (player);
