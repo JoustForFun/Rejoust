@@ -34,7 +34,7 @@ namespace Lib {
 		public static readonly AudioClip ROAR = Resources.Load<AudioClip> ("Audio/Roar");
 		public static readonly AudioClip WALK = Resources.Load<AudioClip> ("Audio/Walk");
 		public static readonly AudioClip POWERUP_DISAPPEAR = Resources.Load<AudioClip> ("Audio/PowerupDisappear");
-		public static readonly AudioClip Enemy_FLAP = Resources.Load<AudioClip> ("Audio/EnemyFlap");
+		public static readonly AudioClip ENEMY_FLAP = Resources.Load<AudioClip> ("Audio/EnemyFlap");
 
 	}
 
@@ -48,6 +48,7 @@ namespace Lib {
 	}
 
 	public static class Entities {
+		public static readonly GameObject BOSS_LION = Resources.Load("Prefab/BossLion") as GameObject;
 		public static readonly GameObject ENEMY_MINI_DRAGON = Resources.Load ("Prefab/EnemyMiniDragon") as GameObject;
 		public static readonly GameObject ENEMY_RAVEN_KNIGHT = Resources.Load ("Prefab/EnemyRavenKnight") as GameObject;
 		public static readonly GameObject ENEMY_CENTAUR = Resources.Load("Prefab/EnemyCentaur") as GameObject;

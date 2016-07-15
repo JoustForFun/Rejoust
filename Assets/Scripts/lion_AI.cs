@@ -1,97 +1,117 @@
 ﻿using UnityEngine;
 using System.Collections;
+using JPlayer;
+using JAudio;
+using JPowerUp;
+using Lib;
+using UnityEngine.SceneManagement;
+using Utils;
 
 public class lion_AI : MonoBehaviour {
 
-	Rigidbody2D rb1; 
-	public float lion_y; 
-	public float player_y;
-	public float player_x;
-	public float sometimes_x;
-	public float sometimes_y;
-	public float begin_diff;
-	public float lion_alert; 
-	public float lion_speed;
-	public float lion_lives; 
-	GameObject player; 
-
-	private bool go_up; 
-
-
+	Rigidbody2D rb1;
+	public int lion_lives; 
+	public float lion_timer;
+	private bool go_up;
+	GameObject player;
 
 	// Use this for initialization
 	void Start () {
 		rb1 = GetComponent<Rigidbody2D> ();
-		lion_y = transform.position.y;
-		begin_diff = player_y - lion_y;
-		lion_alert = 5.0f;
-		lion_speed = 2.0f;
-		lion_lives = 4.0f; 
+		lion_lives = 5;
+		go_up = false;
 		player = GameObject.FindGameObjectWithTag ("Player");
 
 	}
 
 	// Update is called once per frame
 	void Update () {
+
+		if (go_up == true && transform.position.y > 8f) {
+			Destroy (gameObject);
+			return;
+		} else if (go_up == true) {
+			gameObject.transform.position += new Vector3 (0, 0.2f, 0);
+			return;
+		}
+		
+
+		if(lion_timer > 0){
+			lion_timer -= Time.deltaTime;
+			gameObject.GetComponent<Rigidbody2D> ().velocity = new Vector2(0,0);
+		}
+
 		GameObject thePlayer = GameObject.FindWithTag ("Player");
+		Vector2 playerPos = thePlayer.transform.position;
+
+		if (Random.Range (0, 300) == 1) {
+			SpawnUtils.SpawnGameObject (Entities.ENEMY_CENTAUR, gameObject);
+			AudioManager.INSTANCE.PlayAudio (Audio.ROAR);
+		}
 
 		if (thePlayer == null)
 			return;
-		lion_y = transform.position.y; 
-		player_y = thePlayer.transform.position.y;
-
-		player_x = thePlayer.transform.position.x;
-
 		if (transform.position.x > 10)  //looping screen 
-			transform.position = new Vector2 (-10.0f, lion_y);
+			transform.position = new Vector2 (-10.0f, transform.position.y);
 
 		if (transform.position.x < -10)  //looping screen 
-			transform.position = new Vector2 (10.0f, lion_y);
-		//transform.position = new Vector3(player_x, player_y, -1.0f) * Time.deltaTime * 6.0f;
-		transform.position += new Vector3((player_x-transform.position.x),0,0) * Time.deltaTime * sometimes_x;
+			transform.position = new Vector2 (10.0f, transform.position.y);
 
-		if (player_y - lion_y>=begin_diff-0.1f) { //fly upwards if player height is greater than enemy height
-			Flying (); 
-
+		if (playerPos.y >= transform.position.y) {
+			transform.position += new Vector3(0.5f*(playerPos.x-transform.position.x),0.5f,0) * Time.deltaTime;
+			gameObject.GetComponent<Rigidbody2D> ().velocity = new Vector2(0,0);
+		} else if (playerPos.y < transform.position.y) {
+			transform.position -= new Vector3(-0.5f*(playerPos.x-transform.position.x),1f,0) * Time.deltaTime;
+			gameObject.GetComponent<Rigidbody2D> ().velocity = new Vector2(0,0);
 		}
-		else if (player_y - lion_y<begin_diff-0.1f) { //attack if player height is less than enemy height
-			Attacking ();
-		} 
-
 	}
 
-	void Flying() {
-		gameObject.GetComponent<Rigidbody2D> ().AddForce (new Vector2(0,  sometimes_y * 0.1f * (player_y - transform.position.y)));
-		Vector2 new_dir=new Vector2(player_x-transform.position.x,player_y-transform.position.y+0.1f).normalized;
-		GetComponent<Rigidbody2D>().velocity=(lion_speed*new_dir+new Vector2(0,0.02f*Mathf.Sin(Time.time)));
-		//transform.position += new Vector3(0,(player_y-transform.position.y)*0.8f,0) * Time.deltaTime * sometimes_y;
-
-		//flies upwards
-		//rb1.AddForce(sometimes*transform.up); //adds upwards force to make floaty 
-	}
-
-	//void AwkwardFlying() {
-		//gameObject.GetComponent<Rigidbody2D> ().AddForce (new Vector2(0,  sometimes_y * 0.2f * (player_y - transform.position.y)));
-	//}
-
-	void Attacking(){
-
-
-	}
-		
-	void OnCollisionEnter (Collision hit){
+	void OnCollisionEnter2D (Collision2D hit){
 		string tag = hit.gameObject.tag.ToLower();
 
-		if (tag == "player"){
-			Debug.Log ("beginning"); 
+		if (tag != "player")
+			return;
+
+		if (hit.transform.position.y > transform.position.y && lion_timer <= 0) {
+			hit.gameObject.GetComponent<Rigidbody2D> ().velocity = new Vector2(Random.Range(0f,1f), 5.0f);
 			lion_lives--;
-			if (lion_lives == 0){
-				go_up = true; 
-				if (go_up == true){
-					transform.position = new Vector2 (11.0f, 7.0f);
-					Destroy (gameObject); 
-				}
+			lion_timer = 5.0f;
+			gameObject.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0f, 5.0f));
+			AudioManager.INSTANCE.PlayAudio (Audio.ROAR);
+			if (lion_lives == 0) {
+				Destroy (gameObject.GetComponent<Rigidbody2D> ());
+				go_up = true;
 			}
+		} else if (hit.transform.position.y <= transform.position.y) {
+			AudioManager.INSTANCE.PlayAudio (Audio.ROAR);
+
+			PlayerStats stats = PlayerStatsController.INSTANCE.GetPlayerStats (hit.gameObject.GetComponent<controller> ().stat_id);
+
+			if (stats.invincible)
+				return;
+			
+			stats.lives--;
+
+			AudioManager.INSTANCE.PlayAudio (Audio.DEATH);
+
+			if (stats.powerups != EnumPowerup.NONE)
+				PowerupFactory.INSTANCE.CallPowerup (stats.powerups).OnTimeout (hit.gameObject);
+
+			stats.powerups = EnumPowerup.SHEILD;
+			IPowerup thePowerup = PowerupFactory.INSTANCE.CallPowerup (EnumPowerup.SHEILD);
+
+			stats.powerupTimer = thePowerup.GetTimeoutTime ();
+			thePowerup.OnPickUp (hit.gameObject);
+
+			hit.gameObject.transform.position = new Vector2 (0, 0);
+
+			if (stats.lives < -1) {
+				Destroy (hit.gameObject);
+				Reference.FINAL_SCORE = stats.score;
+				SceneManager.LoadScene (2);
+			}
+		} else if (lion_timer > 0) {
+			hit.gameObject.GetComponent<Rigidbody2D> ().velocity = new Vector2(Random.Range(0f,1f), 5.0f);
 		}
 	
 	}

@@ -6,6 +6,7 @@ using JPlayer;
 using Utils;
 using Lib;
 using JAudio;
+using UnityEngine.SceneManagement;
 
 public class controller : MonoBehaviour { 
 	Rigidbody2D rb; //rigidbody for upwards force
@@ -84,7 +85,7 @@ public class controller : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.LeftControl)) { // jumping
 			transform.Translate (Vector2.up * Time.deltaTime * stats.GetJumpHeight());
 			rb.AddForce(transform.up * 124); //makes it floaty! 
-			AudioManager.INSTANCE.PlayAudio (Audio.Enemy_FLAP);
+			AudioManager.INSTANCE.PlayAudio (Audio.FLAP);
 			OnGround = false;
 		}
 
@@ -133,8 +134,11 @@ public class controller : MonoBehaviour {
 				gameObject.transform.position = new Vector2(0, 0);
 				gameObject.GetComponent<Animator> ().SetInteger ("State", 3);
 
-				if (stats.lives < 0) 
+				if (stats.lives < 0) {
 					Destroy (gameObject);
+					Reference.FINAL_SCORE = stats.score;
+					SceneManager.LoadScene (2);
+				}
 				
 			} else {
 				//Destroy (gameObject);

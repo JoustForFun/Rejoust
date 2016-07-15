@@ -4,6 +4,7 @@ using JPlayer;
 using JPowerUp;
 using JAudio;
 using Lib;
+using UnityEngine.SceneManagement;
 
 public class EntityLava : MonoBehaviour {
 
@@ -18,7 +19,7 @@ public class EntityLava : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
-		if (col.gameObject.tag == "Enemy" || col.gameObject.tag == "SoulGem") 
+		if ((col.gameObject.tag == "Enemy" && !col.gameObject.name.ToLower().Contains("lion"))|| col.gameObject.tag == "SoulGem") 
 			Destroy (col.gameObject);
 		else if (col.gameObject.tag == "Player") {
 			PlayerStats stats = PlayerStatsController.INSTANCE.GetPlayerStats (col.gameObject.GetComponent<controller> ().stat_id);
@@ -37,8 +38,11 @@ public class EntityLava : MonoBehaviour {
 
 			col.gameObject.transform.position = new Vector2(0, 0);
 
-			if (stats.lives < 0)
+			if (stats.lives < 0) {
 				Destroy (col.gameObject);
+				Reference.FINAL_SCORE = stats.score;
+				SceneManager.LoadScene (2);
+			}
 		}
 	}
 }
