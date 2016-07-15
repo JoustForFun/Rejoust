@@ -92,11 +92,11 @@ public class controller : MonoBehaviour {
 		if (transform.position.x > 10) { //looping screen 
 			transform.position = new Vector2 (-10.0f, player_y);
 
-		}
-			
-		if (transform.position.x < -10) { //looping screen 
+		} else if (transform.position.x < -10) { //looping screen 
 			transform.position = new Vector2 (10.0f, player_y);
 
+		} else if (transform.position.y > 5.85f) {
+			transform.position = new Vector2 (5f, transform.position.y);
 		}
 	}
 
