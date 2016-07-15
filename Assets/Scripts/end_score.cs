@@ -8,14 +8,13 @@ public class end_score : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake() {
+		JPlayer.PlayerStatsController.INSTANCE.ClearPlayers ();
 		mytext = gameObject.GetComponent<Text> ();
 
 	}
 
 	void Start () {
-		mytext.text = "YOUR SCORE: " + 	Reference.FINAL_SCORE;
-
-
+		mytext.text = string.Format("YOUR SCORE: {0}", Reference.FINAL_SCORE);
 	}
 
 	// Update is called once per frame

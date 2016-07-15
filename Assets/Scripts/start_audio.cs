@@ -7,6 +7,7 @@ public class start_audio : MonoBehaviour {
 
 
 	void Awake() {
+		AudioManager.INSTANCE.SetCamera (GameObject.FindGameObjectWithTag("MainCamera"));
 		AudioManager.INSTANCE.PlayAudio (Audio.MENU_SONG, true); 
 
 	}

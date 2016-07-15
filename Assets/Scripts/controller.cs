@@ -137,6 +137,7 @@ public class controller : MonoBehaviour {
 				if (stats.lives < 0) {
 					Destroy (gameObject);
 					Reference.FINAL_SCORE = stats.score;
+					Debug.Log (Reference.FINAL_SCORE);
 					SceneManager.LoadScene (2);
 				}
 				

@@ -39,8 +39,9 @@ public class EntityLava : MonoBehaviour {
 			col.gameObject.transform.position = new Vector2(0, 0);
 
 			if (stats.lives < 0) {
-				Destroy (col.gameObject);
 				Reference.FINAL_SCORE = stats.score;
+				Debug.Log (Reference.FINAL_SCORE);
+				Destroy (col.gameObject);
 				SceneManager.LoadScene (2);
 			}
 		}

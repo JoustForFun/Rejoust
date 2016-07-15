@@ -108,6 +108,7 @@ public class lion_AI : MonoBehaviour {
 			if (stats.lives < -1) {
 				Destroy (hit.gameObject);
 				Reference.FINAL_SCORE = stats.score;
+				Debug.Log (Reference.FINAL_SCORE);
 				SceneManager.LoadScene (2);
 			}
 		} else if (lion_timer > 0) {

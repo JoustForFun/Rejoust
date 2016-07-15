@@ -19,7 +19,7 @@ public class lives : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		mytext.text = "Lives: " + PlayerStatsController.INSTANCE.GetPlayerStats (myPlayer).lives;
+		mytext.text = "Lives: " + PlayerStatsController.INSTANCE.GetPlayerStats (0).lives;
 	}
 
 	//public void AddScore(int delta){
