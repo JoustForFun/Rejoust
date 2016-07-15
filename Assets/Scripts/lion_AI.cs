@@ -79,6 +79,7 @@ public class lion_AI : MonoBehaviour {
 			gameObject.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0f, 5.0f));
 			AudioManager.INSTANCE.PlayAudio (Audio.ROAR);
 			if (lion_lives == 0) {
+				PlayerStatsController.INSTANCE.GetPlayerStats (0).score += 10000;
 				Destroy (gameObject.GetComponent<Rigidbody2D> ());
 				go_up = true;
 			}

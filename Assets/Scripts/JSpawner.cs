@@ -76,7 +76,7 @@ public class JSpawner : MonoBehaviour {
 	}
 
 	private void SpawnEnemies(int wave) {
-		if (wave % 5 == 0) {
+		if (wave % 2 == 0) {
 			SpawnUtils.SpawnGameObject (Entities.BOSS_LION, new Vector3 (-0f, 4f, 0f));
 			WaveScreen.GetComponent<Canvas> ().enabled = false;
 		} else if (wave % 3 == 0) {
