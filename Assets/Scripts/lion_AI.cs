@@ -106,7 +106,7 @@ public class lion_AI : MonoBehaviour {
 
 			hit.gameObject.transform.position = new Vector2 (0, 0);
 
-			if (stats.lives < -1) {
+			if (stats.lives < 0) {
 				Destroy (hit.gameObject);
 				Reference.FINAL_SCORE = stats.score;
 				Debug.Log (Reference.FINAL_SCORE);
